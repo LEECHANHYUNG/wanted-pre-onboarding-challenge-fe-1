@@ -1,20 +1,21 @@
+import { Route, Switch } from 'react-router-dom';
+import SignIn from './components/Auth/SignIn';
+import SignUp from './components/Auth/SignUp';
+import TodoMain from './components/Todo/TodoMain';
+
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <Route path="/auth/signin">
+        <SignIn />
+      </Route>
+      <Route path="/auth/signup">
+        <SignUp />
+      </Route>
+      <Route path="/">
+        <TodoMain />
+      </Route>
+    </Switch>
   );
 }
 
