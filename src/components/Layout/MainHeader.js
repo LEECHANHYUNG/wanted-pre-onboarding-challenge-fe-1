@@ -39,6 +39,7 @@ const Header = styled.header`
 const MainHeader = () => {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isLoggedIn;
+
   return (
     <Header>
       <div className="left">

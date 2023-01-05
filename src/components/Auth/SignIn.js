@@ -45,6 +45,9 @@ const SignIn = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const authCtx = useContext(AuthContext);
+  if (localStorage.getItem('token')) {
+    history.replace('/');
+  }
   const submitSignInHandler = async (e) => {
     e.preventDefault();
     const emailValue = emailInputRef.current.value;
