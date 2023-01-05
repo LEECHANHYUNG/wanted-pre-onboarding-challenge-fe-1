@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 const Wrapper = styled.div`
   position: relative;
-  width: 100%;
+  width: 90%;
   border: 1px solid #111;
   border-radius: 6px;
   margin: 10px 0px;
@@ -18,10 +18,10 @@ const Wrapper = styled.div`
     justify-content: space-around;
   }
 `;
-const Todo = ({ info }) => {
+const Todo = ({ info, setSelectedTodo }) => {
   return (
-    <Wrapper>
-      <h1 className="title">{info.title}</h1>
+    <Wrapper onClick={() => setSelectedTodo(info.id)}>
+      <h1 className="title">{info.title.slice(0, 10)}</h1>
 
       <div className="date">
         <div>

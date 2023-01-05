@@ -4,34 +4,40 @@ import styled from 'styled-components';
 import AuthContext from '../../store/auth-context';
 import Button from '../ui/Button';
 import Todo from './Todo';
+import TodoListForm from './TodoListForm';
 
 const Wrapper = styled.section`
   position: relative;
   top: 300px;
-  width: 500px;
+  width: 1000px;
   background: #bbb;
   margin: auto;
   padding: 1rem 5rem;
-  height: 70vh;
-  overflow-y: scroll;
+  height: 60vh;
+  .list {
+    width: 500px;
+    display: inline-block;
+  }
+  .list main {
+    height: 50vh;
+    overflow-y: scroll;
+  }
   .no-list-message {
     margin-top: 50px;
     text-align: center;
     font-weight: 800;
   }
-  button {
-    position: absolute;
-    top: -20px;
-    right: 80px;
-    z-index: 10;
-    margin-top: 50px;
-    width: 40%;
-  }
 `;
 const TodoList = () => {
+  const [showForm, setShowForm] = useState(false);
+  const [newTodo, setNewTodo] = useState(null);
+  const [todoList, setTodoList] = useState([]);
+  const [selectedTodo, setSelectedTodo] = useState(null);
+  const showNewTodoListForm = () => {
+    setShowForm(true);
+  };
   const authCtx = useContext(AuthContext);
 
-  const [todoList, setTodoList] = useState([]);
   useEffect(() => {
     const getTodoListHandler = async () => {
       try {
@@ -40,7 +46,6 @@ const TodoList = () => {
           headers: { Authorization: authCtx.token },
         });
         if (response.status === 200) {
-          console.log(response);
           setTodoList(response.data.data);
         } else {
           throw new Error(response.data);
@@ -50,18 +55,35 @@ const TodoList = () => {
       }
     };
     getTodoListHandler();
-  }, []);
+  }, [newTodo, authCtx.token]);
+
   return (
     <Wrapper>
-      <h1>나의 TodoList</h1>
-      <main>
-        {todoList ? (
-          todoList.map((elem) => <Todo info={elem} key={elem.id} />)
-        ) : (
-          <p className="no-list-message">등록된 Todo가 없습니다.</p>
-        )}
-      </main>
-      <Button>Todo 추가</Button>
+      <div className="list">
+        <h1>나의 TodoList</h1>
+        <main>
+          {todoList ? (
+            todoList.map((elem) => (
+              <Todo
+                info={elem}
+                key={elem.id}
+                setSelectedTodo={setSelectedTodo}
+              />
+            ))
+          ) : (
+            <p className="no-list-message">등록된 Todo가 없습니다.</p>
+          )}
+        </main>
+        <Button onClick={showNewTodoListForm}>Todo 추가</Button>
+      </div>
+      {showForm && (
+        <TodoListForm
+          token={authCtx.token}
+          setShowForm={setShowForm}
+          setNewTodo={setNewTodo}
+        />
+      )}
+      {selectedTodo && <TodoDetail />}
     </Wrapper>
   );
 };
