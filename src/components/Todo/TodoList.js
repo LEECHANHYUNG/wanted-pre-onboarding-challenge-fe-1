@@ -4,13 +4,17 @@ import styled from 'styled-components';
 import AuthContext from '../../store/auth-context';
 import Button from '../ui/Button';
 import Todo from './Todo';
+import TodoDetail from './TodoDetail';
 import TodoListForm from './TodoListForm';
+import UpdateTodoForm from './UpdateTodoForm';
 
 const Wrapper = styled.section`
   position: relative;
   top: 300px;
   width: 1000px;
-  background: #bbb;
+  background: #a8b8d0;
+  border: 1px solid #111;
+  border-radius: 20px;
   margin: auto;
   padding: 1rem 5rem;
   height: 60vh;
@@ -31,8 +35,10 @@ const Wrapper = styled.section`
 const TodoList = () => {
   const [showForm, setShowForm] = useState(false);
   const [newTodo, setNewTodo] = useState(null);
+  const [deleteTodo, setDeleteTodo] = useState(null);
   const [todoList, setTodoList] = useState([]);
   const [selectedTodo, setSelectedTodo] = useState(null);
+  const [updateTodo, setUpdateTodo] = useState(null);
   const showNewTodoListForm = () => {
     setShowForm(true);
   };
@@ -55,7 +61,7 @@ const TodoList = () => {
       }
     };
     getTodoListHandler();
-  }, [newTodo, authCtx.token]);
+  }, [newTodo, authCtx.token, deleteTodo, updateTodo]);
 
   return (
     <Wrapper>
@@ -68,6 +74,7 @@ const TodoList = () => {
                 info={elem}
                 key={elem.id}
                 setSelectedTodo={setSelectedTodo}
+                setUpdateTodo={setUpdateTodo}
               />
             ))
           ) : (
@@ -83,7 +90,23 @@ const TodoList = () => {
           setNewTodo={setNewTodo}
         />
       )}
-      {selectedTodo && <TodoDetail />}
+      {selectedTodo && (
+        <TodoDetail
+          selectedTodo={selectedTodo}
+          token={authCtx.token}
+          setSelectedTodo={setSelectedTodo}
+          setDeleteTodo={setDeleteTodo}
+          setUpdateTodo={setUpdateTodo}
+        />
+      )}
+      {updateTodo && (
+        <UpdateTodoForm
+          token={authCtx.token}
+          setUpdateTodo={setUpdateTodo}
+          setSelectedTodo={setSelectedTodo}
+          selectedTodo={updateTodo}
+        />
+      )}
     </Wrapper>
   );
 };

@@ -11,6 +11,7 @@ const Input = React.forwardRef((props, ref) => (
     type={props.type}
     placeholder={props.placeholder || ''}
     name={props.name || ''}
+    defaultValue={props.defaultValue || ''}
     ref={ref}
   />
 ));

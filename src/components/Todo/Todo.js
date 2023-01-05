@@ -18,9 +18,14 @@ const Wrapper = styled.div`
     justify-content: space-around;
   }
 `;
-const Todo = ({ info, setSelectedTodo }) => {
+const Todo = ({ info, setSelectedTodo, setUpdateTodo }) => {
   return (
-    <Wrapper onClick={() => setSelectedTodo(info.id)}>
+    <Wrapper
+      onClick={() => {
+        setSelectedTodo(info.id);
+        setUpdateTodo(null);
+      }}
+    >
       <h1 className="title">{info.title.slice(0, 10)}</h1>
 
       <div className="date">
@@ -30,7 +35,7 @@ const Todo = ({ info, setSelectedTodo }) => {
         </div>
         <div>
           <div className="description">수정일</div>
-          <div className="create-date">{info.updatedAt.slice(0, 10)}</div>
+          <div className="update-date">{info.updatedAt.slice(0, 10)}</div>
         </div>
       </div>
     </Wrapper>
