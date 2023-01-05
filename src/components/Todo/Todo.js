@@ -18,12 +18,13 @@ const Wrapper = styled.div`
     justify-content: space-around;
   }
 `;
-const Todo = ({ info, setSelectedTodo, setUpdateTodo }) => {
+const Todo = ({ info, setSelectedTodo, setUpdateTodo, setShowForm }) => {
   return (
     <Wrapper
       onClick={() => {
         setSelectedTodo(info.id);
         setUpdateTodo(null);
+        setShowForm(null);
       }}
     >
       <h1 className="title">{info.title.slice(0, 10)}</h1>

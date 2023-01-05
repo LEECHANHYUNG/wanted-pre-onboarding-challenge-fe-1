@@ -41,6 +41,7 @@ const TodoList = () => {
   const [updateTodo, setUpdateTodo] = useState(null);
   const showNewTodoListForm = () => {
     setShowForm(true);
+    setSelectedTodo(null);
   };
   const authCtx = useContext(AuthContext);
 
@@ -75,6 +76,7 @@ const TodoList = () => {
                 key={elem.id}
                 setSelectedTodo={setSelectedTodo}
                 setUpdateTodo={setUpdateTodo}
+                setShowForm={setShowForm}
               />
             ))
           ) : (
