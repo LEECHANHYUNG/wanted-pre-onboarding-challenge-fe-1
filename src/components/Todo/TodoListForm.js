@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import Button from '../ui/Button';
-import Input from '../ui/Input';
+import Button from '../UI/Button';
+import Input from '../UI/Input';
 const Wrapper = styled.section`
   position: relative;
   display: block;

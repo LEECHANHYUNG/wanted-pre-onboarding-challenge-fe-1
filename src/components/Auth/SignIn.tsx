@@ -3,8 +3,8 @@ import React, { useContext, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthContext from '../../store/auth-context';
-import Button from '../ui/Button';
-import Input from '../ui/Input';
+import Button from '../UI/Button';
+import Input from '../UI/Input';
 
 const Wrapper = styled.section`
   position: relative;
@@ -42,16 +42,16 @@ const Wrapper = styled.section`
 
 const SignIn = () => {
   const history = useHistory();
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
+  const emailInputRef = useRef<any>();
+  const passwordInputRef = useRef<any>();
   const authCtx = useContext(AuthContext);
   if (localStorage.getItem('token')) {
     history.replace('/');
   }
-  const submitSignInHandler = async (e) => {
+  const submitSignInHandler = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    const emailValue = emailInputRef.current.value;
-    const passwordValue = passwordInputRef.current.value;
+    const emailValue: string = emailInputRef.current.value;
+    const passwordValue: string = passwordInputRef.current.value;
     try {
       const response = await axios({
         url: 'http://localhost:8080/users/login',

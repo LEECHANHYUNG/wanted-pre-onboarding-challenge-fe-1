@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthContext from '../../store/auth-context';
-import Button from '../ui/Button';
+import Button from '../UI/Button';
 const Wrapper = styled.section`
   position: relative;
   top: 300px;

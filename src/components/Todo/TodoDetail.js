@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Button from '../ui/Button';
+import Button from '../UI/Button';
 const Wrapper = styled.section`
   position: relative;
   display: block;

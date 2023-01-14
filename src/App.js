@@ -1,5 +1,5 @@
 import { Route, Switch } from 'react-router-dom';
-import SignIn from './components/Auth/SignIn';
+import SignIn from './components/Auth/SignIn.tsx';
 import SignUp from './components/Auth/SignUp';
 import TodoList from './components/Todo/TodoList';
 import TodoMain from './components/Todo/TodoMain';

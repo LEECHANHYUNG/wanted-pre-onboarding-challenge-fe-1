@@ -3,8 +3,8 @@ import React, { useContext, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import AuthContext from '../../store/auth-context';
-import Button from '../ui/Button';
-import Input from '../ui/Input';
+import Button from '../UI/Button';
+import Input from '../UI/Input';
 
 const Wrapper = styled.section`
   position: relative;
