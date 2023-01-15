@@ -1,7 +1,21 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../UI/Button';
+interface TodoListItem {
+  title: string;
+  content: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+interface TodoProps {
+  selectedTodoId: number;
+  token: string;
+  setSelectedTodoId: Dispatch<SetStateAction<number | null>>;
+  setUpdateTodo: Dispatch<SetStateAction<TodoListItem | null>>;
+  setDeleteTodo: Dispatch<SetStateAction<number | null>>;
+}
 const Wrapper = styled.section`
   position: relative;
   display: block;
@@ -27,18 +41,18 @@ const Wrapper = styled.section`
   }
 `;
 const TodoDetail = ({
-  selectedTodo,
+  selectedTodoId,
   token,
-  setSelectedTodo,
+  setSelectedTodoId,
   setDeleteTodo,
   setUpdateTodo,
-}) => {
-  const [todo, setTodo] = useState(null);
+}: TodoProps) => {
+  const [todo, setTodo] = useState<TodoListItem | null>(null);
   useEffect(() => {
     const getTodoByIdHandler = async () => {
       try {
         const response = await axios({
-          url: `http://localhost:8080/todos/${selectedTodo}`,
+          url: `http://localhost:8080/todos/${selectedTodoId}`,
           headers: { Authorization: token },
         });
         if (response.status === 200) {
@@ -46,33 +60,43 @@ const TodoDetail = ({
         } else {
           throw new Error(response.data.data);
         }
-      } catch (error) {
+      } catch (error: any) {
         alert(error.response.data);
       }
     };
     getTodoByIdHandler();
-  }, [selectedTodo, token]);
+  }, [selectedTodoId, token]);
   const showUpdateTodoFormHandler = () => {
-    setUpdateTodo({ title: todo.title, content: todo.content, id: todo.id });
-    setSelectedTodo(null);
+    if (todo) {
+      setUpdateTodo({
+        title: todo.title,
+        content: todo.content,
+        id: todo.id,
+        createdAt: todo.createdAt,
+        updatedAt: todo.updatedAt,
+      });
+    }
+    setSelectedTodoId(null);
   };
   const deleteTodoHandler = async () => {
-    try {
-      const response = await axios({
-        url: `http://localhost:8080/todos/${todo.id}`,
-        method: 'delete',
-        headers: { Authorization: token },
-      });
-      if (response.status === 200) {
-        setTodo(null);
-        alert('삭제 완료');
-        setSelectedTodo(null);
-        setDeleteTodo(todo.id);
-      } else {
-        throw new Error(response.data.data);
+    if (todo) {
+      try {
+        const response = await axios({
+          url: `http://localhost:8080/todos/${todo.id}`,
+          method: 'delete',
+          headers: { Authorization: token },
+        });
+        if (response.status === 200) {
+          setTodo(null);
+          alert('삭제 완료');
+          setSelectedTodoId(null);
+          setDeleteTodo(todo.id);
+        } else {
+          throw new Error(response.data.data);
+        }
+      } catch (error: any) {
+        alert(error.response.data);
       }
-    } catch (error) {
-      alert(error.response.data);
     }
   };
   return (
@@ -101,8 +125,24 @@ const TodoDetail = ({
         </main>
       )}
       <div className="btn">
-        <Button onClick={showUpdateTodoFormHandler}>수정</Button>
-        <Button onClick={deleteTodoHandler}>삭제</Button>
+        <Button
+          onClick={showUpdateTodoFormHandler}
+          type="button"
+          id={undefined}
+          disabled={undefined}
+          value={undefined}
+        >
+          수정
+        </Button>
+        <Button
+          type="button"
+          id={undefined}
+          disabled={undefined}
+          value={undefined}
+          onClick={deleteTodoHandler}
+        >
+          삭제
+        </Button>
       </div>
     </Wrapper>
   );

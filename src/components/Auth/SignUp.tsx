@@ -44,31 +44,35 @@ const SignUp = () => {
   const history = useHistory();
   const authCtx = useContext(AuthContext);
 
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
-  const submitSignUpHandler = async (e) => {
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+  const submitSignUpHandler = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
-    const emailValue = emailInputRef.current.value;
-    const passwordValue = passwordInputRef.current.value;
-    try {
-      const response = await axios({
-        url: 'http://localhost:8080/users/create',
-        method: 'post',
-        data: {
-          email: emailValue,
-          password: passwordValue,
-        },
-      });
-      if (response.status === 200) {
-        alert(response.data.message);
-        authCtx.login(response.data.token);
-        localStorage.setItem('token', response.data.token);
-        history.replace('/');
-      } else {
-        throw new Error(response.data);
+    if (emailInputRef.current && passwordInputRef.current) {
+      const emailValue = emailInputRef.current.value;
+      const passwordValue = passwordInputRef.current.value;
+      try {
+        const response = await axios({
+          url: 'http://localhost:8080/users/create',
+          method: 'post',
+          data: {
+            email: emailValue,
+            password: passwordValue,
+          },
+        });
+        if (response.status === 200) {
+          alert(response.data.message);
+          authCtx.login(response.data.token);
+          localStorage.setItem('token', response.data.token);
+          history.replace('/');
+        } else {
+          throw new Error(response.data);
+        }
+      } catch (error: any) {
+        alert(error.response.data.details);
       }
-    } catch (error) {
-      alert(error.response.data.details);
     }
   };
   return (
@@ -89,7 +93,13 @@ const SignUp = () => {
           name="password"
           ref={passwordInputRef}
         />
-        <Button type="submit" onClick={submitSignUpHandler}>
+        <Button
+          type="submit"
+          onClick={submitSignUpHandler}
+          id={undefined}
+          disabled={undefined}
+          value={undefined}
+        >
           회원가입
         </Button>
       </form>

@@ -1,5 +1,18 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+interface TodoListItem {
+  title: string;
+  content: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+interface TodoProps {
+  info: TodoListItem;
+  setSelectedTodoId: Dispatch<SetStateAction<null | number>>;
+  setUpdateTodo: Dispatch<SetStateAction<null | TodoListItem>>;
+  setShowForm: Dispatch<SetStateAction<boolean>>;
+}
 const Wrapper = styled.div`
   position: relative;
   width: 90%;
@@ -18,13 +31,18 @@ const Wrapper = styled.div`
     justify-content: space-around;
   }
 `;
-const Todo = ({ info, setSelectedTodo, setUpdateTodo, setShowForm }) => {
+const Todo = ({
+  info,
+  setSelectedTodoId,
+  setUpdateTodo,
+  setShowForm,
+}: TodoProps) => {
   return (
     <Wrapper
       onClick={() => {
-        setSelectedTodo(info.id);
+        setSelectedTodoId(info.id);
         setUpdateTodo(null);
-        setShowForm(null);
+        setShowForm(false);
       }}
     >
       <h1 className="title">{info.title.slice(0, 10)}</h1>

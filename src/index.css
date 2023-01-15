@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+button {
+  font: inherit;
+  background: #6a9eff;
+  color: #fff;
+  padding: 0.25rem 1rem;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 6px;
+  text-align: center;
+}
+button :active {
+  background: #6a9eff;
+  border-color: rgb(91, 135, 218);
+}
+
+button :focus {
+  outline: none;
+}
+button :disabled {
+  border: #111;
+  background: #999;
+}

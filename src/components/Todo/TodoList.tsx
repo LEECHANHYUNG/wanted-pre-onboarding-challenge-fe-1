@@ -7,7 +7,13 @@ import Todo from './Todo';
 import TodoDetail from './TodoDetail';
 import TodoListForm from './TodoListForm';
 import UpdateTodoForm from './UpdateTodoForm';
-
+interface TodoListItem {
+  title: string;
+  content: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
 const Wrapper = styled.section`
   position: relative;
   top: 300px;
@@ -33,15 +39,14 @@ const Wrapper = styled.section`
   }
 `;
 const TodoList = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [newTodo, setNewTodo] = useState(null);
-  const [deleteTodo, setDeleteTodo] = useState(null);
-  const [todoList, setTodoList] = useState([]);
-  const [selectedTodo, setSelectedTodo] = useState(null);
-  const [updateTodo, setUpdateTodo] = useState(null);
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [newTodo, setNewTodo] = useState<TodoListItem | undefined>();
+  const [deleteTodo, setDeleteTodo] = useState<number | null>(null);
+  const [todoList, setTodoList] = useState<TodoListItem[]>([]);
+  const [selectedTodoId, setSelectedTodoId] = useState<null | number>(null);
+  const [updateTodo, setUpdateTodo] = useState<null | TodoListItem>(null);
   const showNewTodoListForm = () => {
     setShowForm(true);
-    setSelectedTodo(null);
   };
   const authCtx = useContext(AuthContext);
 
@@ -57,7 +62,7 @@ const TodoList = () => {
         } else {
           throw new Error(response.data);
         }
-      } catch (error) {
+      } catch (error: any) {
         setTodoList(error.response);
       }
     };
@@ -74,7 +79,7 @@ const TodoList = () => {
               <Todo
                 info={elem}
                 key={elem.id}
-                setSelectedTodo={setSelectedTodo}
+                setSelectedTodoId={setSelectedTodoId}
                 setUpdateTodo={setUpdateTodo}
                 setShowForm={setShowForm}
               />
@@ -83,7 +88,15 @@ const TodoList = () => {
             <p className="no-list-message">등록된 Todo가 없습니다.</p>
           )}
         </main>
-        <Button onClick={showNewTodoListForm}>Todo 추가</Button>
+        <Button
+          type="button"
+          onClick={showNewTodoListForm}
+          id={undefined}
+          disabled={undefined}
+          value={undefined}
+        >
+          Todo 추가
+        </Button>
       </div>
       {showForm && (
         <TodoListForm
@@ -92,11 +105,11 @@ const TodoList = () => {
           setNewTodo={setNewTodo}
         />
       )}
-      {selectedTodo && (
+      {selectedTodoId && (
         <TodoDetail
-          selectedTodo={selectedTodo}
+          selectedTodoId={selectedTodoId}
           token={authCtx.token}
-          setSelectedTodo={setSelectedTodo}
+          setSelectedTodoId={setSelectedTodoId}
           setDeleteTodo={setDeleteTodo}
           setUpdateTodo={setUpdateTodo}
         />
@@ -105,7 +118,7 @@ const TodoList = () => {
         <UpdateTodoForm
           token={authCtx.token}
           setUpdateTodo={setUpdateTodo}
-          setSelectedTodo={setSelectedTodo}
+          setSelectedTodoId={setSelectedTodoId}
           selectedTodo={updateTodo}
         />
       )}

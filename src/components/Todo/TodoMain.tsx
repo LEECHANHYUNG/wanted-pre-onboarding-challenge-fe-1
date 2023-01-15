@@ -28,10 +28,26 @@ const TodoMain = () => {
       <h1>Todo List</h1>
       <main>
         {isLoggedIn && (
-          <Button onClick={showListHandler}>나의 Todo List 바로가기</Button>
+          <Button
+            type="button"
+            onClick={showListHandler}
+            id={undefined}
+            disabled={undefined}
+            value={undefined}
+          >
+            나의 Todo List 바로가기
+          </Button>
         )}
         {!isLoggedIn && (
-          <Button onClick={loginPageHandler}>로그인 후 Todo List 작성</Button>
+          <Button
+            type="button"
+            onClick={loginPageHandler}
+            id={undefined}
+            disabled={undefined}
+            value={undefined}
+          >
+            로그인 후 Todo List 작성
+          </Button>
         )}
       </main>
     </Wrapper>

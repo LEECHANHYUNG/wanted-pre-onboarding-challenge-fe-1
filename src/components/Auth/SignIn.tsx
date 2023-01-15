@@ -42,35 +42,37 @@ const Wrapper = styled.section`
 
 const SignIn = () => {
   const history = useHistory();
-  const emailInputRef = useRef<any>();
-  const passwordInputRef = useRef<any>();
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
   const authCtx = useContext(AuthContext);
   if (localStorage.getItem('token')) {
     history.replace('/');
   }
   const submitSignInHandler = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    const emailValue: string = emailInputRef.current.value;
-    const passwordValue: string = passwordInputRef.current.value;
-    try {
-      const response = await axios({
-        url: 'http://localhost:8080/users/login',
-        method: 'post',
-        data: {
-          email: emailValue,
-          password: passwordValue,
-        },
-      });
-      if (response.status === 200) {
-        alert(response.data.message);
-        authCtx.login(response.data.token);
-        localStorage.setItem('token', response.data.token);
-        history.replace('/');
-      } else {
-        throw new Error(response.data);
+    if (emailInputRef.current && passwordInputRef.current) {
+      const emailValue: string = emailInputRef.current.value;
+      const passwordValue: string = passwordInputRef.current.value;
+      try {
+        const response = await axios({
+          url: 'http://localhost:8080/users/login',
+          method: 'post',
+          data: {
+            email: emailValue,
+            password: passwordValue,
+          },
+        });
+        if (response.status === 200) {
+          alert(response.data.message);
+          authCtx.login(response.data.token);
+          localStorage.setItem('token', response.data.token);
+          history.replace('/');
+        } else {
+          throw new Error(response.data);
+        }
+      } catch (error: any) {
+        alert(error.response.data.details);
       }
-    } catch (error) {
-      alert(error.response.data.details);
     }
   };
   return (
@@ -91,7 +93,13 @@ const SignIn = () => {
           name="password"
           ref={passwordInputRef}
         />
-        <Button type="submit" onClick={submitSignInHandler}>
+        <Button
+          type="submit"
+          onClick={submitSignInHandler}
+          id={undefined}
+          disabled={undefined}
+          value={undefined}
+        >
           로그인
         </Button>
       </form>
